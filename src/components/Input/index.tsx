@@ -9,7 +9,7 @@ type InputProps = {
   iconName?: string;
   iconSize?: number;
   iconColor?: string;
-  onChange?: (e: string | ChangeEvent<any>) => void;
+  onChange?: (e: string) => void;
   value?: string;
   autoFocus?: boolean;
   labelSize?: number;
