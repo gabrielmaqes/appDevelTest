@@ -6,7 +6,9 @@ const Main: React.FC = () => {
     console.log('Hello, world!'),
     (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Hello, DevelCode!</Text>
+        <Text style={{fontFamily: 'Nunito-Bold', fontSize: 32}}>
+          Hello, DevelCode!
+        </Text>
       </View>
     )
   );
