@@ -11,4 +11,5 @@ export const HeaderBox = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: ${theme.metrics.doubleSpacing + 'px'};
 `;

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
 import {Container, HeaderBox} from './styles';
 import {Card, Input, Button} from '../../components';
@@ -6,18 +6,22 @@ import {TextComponent} from '../../components/TextComponent';
 import {theme} from '../../styles';
 import {useUserController} from '../../controllers/UsersController';
 import {UserModel} from '@src/models/UserModel';
+import {useNavigation} from '@react-navigation/native';
 
 const Main: React.FC = () => {
   const {getUser, handleUser} = useUserController();
-  const usersListData = getUser.usersList;
+
+  const navigation = useNavigation();
 
   const [value, setValue] = useState('');
-  const [usersFiltered, setUsersFiltered] =
-    useState<UserModel[]>(usersListData);
+  const [usersFiltered, setUsersFiltered] = useState<UserModel[]>([]);
 
   const handleFilter = (filterValue: string) => {
     const filteredList = getUser.usersList.filter(user => {
-      return user.name.includes(filterValue);
+      return user.name
+        .toLowerCase()
+        .trim()
+        .includes(filterValue.toLowerCase().trim());
     });
     setUsersFiltered(filteredList);
     setValue(filterValue);
@@ -31,7 +35,12 @@ const Main: React.FC = () => {
           fontSize={theme.fontSize.bigTitle}>
           Usuários
         </TextComponent>
-        <Button onPress={() => {}}>Novo +</Button>
+        <Button
+          onPress={() => {
+            navigation.navigate('NewUser');
+          }}>
+          Novo +
+        </Button>
       </HeaderBox>
       <Input
         value={value}

@@ -2,6 +2,7 @@ import styled from 'styled-components/native';
 import {theme} from '../../styles';
 type InputModal = {
   border?: string;
+  focus: boolean;
 };
 export const InputText = styled.TextInput<{
   labelSize?: number;
@@ -18,5 +19,8 @@ export const Container = styled.View<InputModal>`
   padding: 2px 5px 2px 24px;
   border-radius: 8px;
   min-height: 48px;
-  margin: ${theme.metrics.bigSpacing + 'px'} 0;
+  margin: ${theme.metrics.baseSpacing + 'px'} 0;
+  border: 2px solid
+    ${({focus}) =>
+      focus ? theme.colors.primaryPurple : theme.colors.secondaryPurple};
 `;
