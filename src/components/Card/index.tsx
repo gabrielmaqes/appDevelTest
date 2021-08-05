@@ -37,7 +37,10 @@ const UserCard: React.FC<UserCardProps> = ({
       />
       <Content>
         <TopLine>
-          <TextComponent width={'60%'} fontFamily="Nunito-Bold">
+          <TextComponent
+            ellipsizeMode="tail"
+            width={'60%'}
+            fontFamily="Nunito-Bold">
             {name}
           </TextComponent>
           <TextComponent

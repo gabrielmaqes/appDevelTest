@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 
 import api from '@src/services/api';
 import {UserModel} from '@src/models/UserModel';
+import {ToastAndroid} from 'react-native';
+import {AxiosError} from 'axios';
 
 export const useUserController = () => {
   const [usersList, setUsersList] = useState<UserModel[]>([]);
@@ -55,7 +57,11 @@ export const useUserController = () => {
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      console.error(err);
+
+      ToastAndroid.show(
+        `${err.response.status} - ${err.response.data.message}`,
+        20,
+      );
     }
   };
 
@@ -84,9 +90,13 @@ export const useUserController = () => {
           'Content-Type': `multipart/form-data;`,
         },
       });
+      ToastAndroid.show(`${response.data.message}`, 20);
       setLoading(false);
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (err) {
+      ToastAndroid.show(
+        `${err.response.status} - ${err.response.data.message}`,
+        20,
+      );
       setLoading(false);
     }
   };
