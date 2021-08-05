@@ -1,5 +1,5 @@
-import {theme} from '../../styles';
-import React, {ChangeEvent, useState} from 'react';
+import {theme} from '@src/styles';
+import React, {useState} from 'react';
 import {View, StyleProp, ViewStyle} from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import {InputText, Container} from './styles';

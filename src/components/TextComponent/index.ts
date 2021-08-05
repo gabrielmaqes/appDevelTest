@@ -1,4 +1,4 @@
-import {theme} from '../../styles';
+import {theme} from '@src/styles';
 import styled from 'styled-components/native';
 
 interface TextComponentsProps {
@@ -13,6 +13,7 @@ interface TextComponentsProps {
 }
 
 export const TextComponent = styled.Text<TextComponentsProps>`
+  width: ${({width = 'auto'}) => width};
   font-size: ${({fontSize = theme.fontSize.base}) => fontSize + 'px'};
   color: ${({color = theme.colors.black}) => color};
   margin: ${({margin = '0px 0px 0px 0px'}) => margin};

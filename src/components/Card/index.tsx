@@ -1,10 +1,11 @@
-import {theme} from '../../styles';
 import React from 'react';
+import {Image} from 'react-native';
+import moment from 'moment';
+
 import {TextComponent} from '../TextComponent';
 import {Container, Content, TopLine} from './styles';
-import moment from 'moment';
-import {Image} from 'react-native';
-import {serverURL} from '../../services/api';
+import {theme} from '@src/styles';
+import {serverURL} from '@src/services/api';
 
 interface UserCardProps {
   name: string;
@@ -36,7 +37,9 @@ const UserCard: React.FC<UserCardProps> = ({
       />
       <Content>
         <TopLine>
-          <TextComponent fontFamily="Nunito-Bold">{name}</TextComponent>
+          <TextComponent width={'60%'} fontFamily="Nunito-Bold">
+            {name}
+          </TextComponent>
           <TextComponent
             color={theme.colors.primaryPurple}
             fontFamily="Nunito-Bold">
@@ -46,7 +49,7 @@ const UserCard: React.FC<UserCardProps> = ({
         <TextComponent
           color={theme.colors.secondaryPurple}
           fontFamily="Nunito-Bold">
-          {moment(birthDate).format('DD/MM/yyyy')}
+          {moment.utc(birthDate).format('DD/MM/yyyy')}
         </TextComponent>
       </Content>
     </Container>

@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+
 import {Container, HeaderBox} from './styles';
-import {Card, Input, Button} from '../../components';
-import {TextComponent} from '../../components/TextComponent';
-import {theme} from '../../styles';
-import {useUserController} from '../../controllers/UsersController';
+import {Card, Input, Button} from '@src/components';
+import {TextComponent} from '@src/components/TextComponent';
+import {theme} from '@src/styles';
+import {useUserController} from '@src/controllers/UsersController';
 import {UserModel} from '@src/models/UserModel';
-import {useNavigation} from '@react-navigation/native';
 
 const Main: React.FC = () => {
   const {getUser, handleUser} = useUserController();
@@ -15,6 +16,12 @@ const Main: React.FC = () => {
 
   const [value, setValue] = useState('');
   const [usersFiltered, setUsersFiltered] = useState<UserModel[]>([]);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    handleUser.getUsersList();
+  }, [isFocused]);
 
   const handleFilter = (filterValue: string) => {
     const filteredList = getUser.usersList.filter(user => {
@@ -60,7 +67,16 @@ const Main: React.FC = () => {
         data={usersFiltered.length ? usersFiltered : getUser.usersList}
         renderItem={({item}) => (
           <Card
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate('Detail', {
+                user: {
+                  name: item.name,
+                  birthDate: item.birthDate,
+                  id: item.id,
+                  photo_uri: item.photo_uri,
+                },
+              });
+            }}
             photo_uri={item.photo_uri}
             name={item.name}
             birthDate={item.birthDate}

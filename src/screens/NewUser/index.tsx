@@ -1,13 +1,9 @@
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Platform,
   StyleSheet,
-  PermissionsAndroid,
-  SafeAreaView,
-  Text,
-  View,
   TouchableOpacity,
-  Image,
 } from 'react-native';
 import moment from 'moment';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -24,16 +20,16 @@ import {theme} from '@src/styles';
 import {useUserController} from '@src/controllers/UsersController';
 import Header from '@src/components/Header';
 import InsertPicture from '@src/components/InsertPicture';
+import {useNavigation} from '@react-navigation/native';
 
 const NewUser: React.FC = () => {
   const {getUser} = useUserController();
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [date, setDate] = useState(new Date(Date.now()));
   const [filePath, setFilePath] = useState<ImagePickerResponse>({});
+  const navigation = useNavigation();
 
   const onChange = (event: any, value: any) => {
-    console.log('datepicker: ', date);
-    console.log('formik: ', getUser.formik.values.birthDate);
     value && setDate(value);
     if (Platform.OS === 'android') {
       setIsPickerOpen(false);
@@ -71,6 +67,7 @@ const NewUser: React.FC = () => {
     <Container>
       <Header title={'Novo Usuário'}></Header>
       <Content>
+        <ActivityIndicator animating={getUser.loading} />
         <InsertPicture
           photo_uri={`${filePath.assets && filePath.assets[0].uri}`}
           onInsertPic={() => chooseFile()}
@@ -94,6 +91,7 @@ const NewUser: React.FC = () => {
             value={date}
             mode={'date'}
             display={'spinner'}
+            timeZoneOffsetInMinutes={1}
             onChange={onChange}
             style={styles.datePicker}
           />
@@ -109,9 +107,16 @@ const NewUser: React.FC = () => {
             getUser.formik.setFieldValue('birthDate', date);
             getUser.formik.handleSubmit();
           }}>
-          Registrar
+          {getUser.loading ? (
+            <ActivityIndicator color={theme.colors.white} size={16} />
+          ) : (
+            'Registrar'
+          )}
         </Button>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}>
           <TextComponent
             color={theme.colors.primaryPurple}
             fontSize={theme.fontSize.base}

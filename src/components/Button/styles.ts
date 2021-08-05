@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {theme} from '../../styles';
+import {theme} from '@src/styles';
 type ButtonProps = {
   backgroundColor?: string;
   padding?: string;
@@ -19,6 +19,7 @@ export const Container = styled.TouchableOpacity<ButtonProps>`
       return width + 'px';
     }
   }};
+  min-height: 43px;
   padding: ${({padding = '10px 15px 10px 15px'}) => padding};
   margin: ${({margin = '0px 0px 0px 0px'}) => margin};
   border-radius: ${theme.metrics.baseRadius + 'px'};

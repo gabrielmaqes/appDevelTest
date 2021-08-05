@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import {theme} from '../../styles';
+import {theme} from '@src/styles';
 
 export const Image = styled.Image`
   align-items: center;

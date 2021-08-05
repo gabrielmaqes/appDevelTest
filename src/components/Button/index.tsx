@@ -1,4 +1,4 @@
-import {theme} from '../../styles';
+import {theme} from '@src/styles';
 import React from 'react';
 import {GestureResponderEvent} from 'react-native';
 import {TextComponent} from '../TextComponent';

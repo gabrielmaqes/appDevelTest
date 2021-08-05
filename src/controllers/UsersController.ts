@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
 import {useFormik} from 'formik';
-import * as Yup from 'yup';
 import FormData from 'form-data';
-
-import api from '../services/api';
-import {UserModel} from '@src/models/UserModel';
 import moment from 'moment';
+import * as Yup from 'yup';
+
+import api from '@src/services/api';
+import {UserModel} from '@src/models/UserModel';
 
 export const useUserController = () => {
   const [usersList, setUsersList] = useState<UserModel[]>([]);
@@ -31,23 +31,23 @@ export const useUserController = () => {
     setLoading(true);
     const newUser = {
       name: values.name,
-      birthDate: moment(values.birthDate).format('yyyy-MM-DD'),
+      birthDate: moment.utc(values.birthDate).format('yyyy-MM-DD'),
     };
 
     const formData = new FormData();
     formData.append('name', newUser.name);
-    formData.append('birthDate', JSON.stringify(newUser.birthDate));
-    formData.append('photo_uri', {
-      uri: values.photo_uri, //Your Image File Path
-      type: 'image/jpeg',
-      name: 'image.jpg',
-    });
+    formData.append('birthDate', newUser.birthDate);
+    values.photo_uri &&
+      formData.append('photo_uri', {
+        uri: values.photo_uri, //Your Image File Path
+        type: 'image/jpeg',
+        name: 'image.jpg',
+      });
 
     try {
       await api.post('/user', formData, {
         headers: {
           accept: 'application/json',
-          'Accept-Language': 'en-US,en;q=0.8',
           'Content-Type': `multipart/form-data;`,
         },
       });
@@ -59,9 +59,52 @@ export const useUserController = () => {
     }
   };
 
+  const editUser = async (values: UserModel) => {
+    setLoading(true);
+    const newUser = {
+      name: values.name,
+      birthDate: moment.utc(values.birthDate).format('yyyy-MM-DD'),
+    };
+
+    const formData = new FormData();
+    formData.append('name', newUser.name);
+    formData.append('birthDate', newUser.birthDate);
+    values.photo_uri &&
+      formData.append('photo_uri', {
+        uri: values.photo_uri,
+        type: 'image/jpeg',
+        name: 'image.jpg',
+      });
+
+    try {
+      setLoading(true);
+      const response = await api.put(`/user/${values.id}`, formData, {
+        headers: {
+          accept: 'application/json',
+          'Content-Type': `multipart/form-data;`,
+        },
+      });
+      setLoading(false);
+    } catch (error) {
+      console.error('Error:', error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getUsersList();
   }, []);
+
+  const formikEdit = useFormik<UserModel>({
+    initialValues: {
+      id: '',
+      name: '',
+      birthDate: new Date(),
+      photo_uri: '',
+    },
+    onSubmit: values => editUser(values),
+    validationSchema,
+  });
 
   const formik = useFormik<UserModel>({
     initialValues: {
@@ -78,6 +121,7 @@ export const useUserController = () => {
       usersList,
       loading,
       formik,
+      formikEdit,
     },
     handleUser: {
       getUsersList,
