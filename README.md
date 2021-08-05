@@ -32,6 +32,8 @@ Depois de configurar o ambiente, inicie o emulador e execute:
 
 > $ yarn start
 
+<br>
+<br>
 
 Mobile application built for technical testing at DevelCode
 
